@@ -1,7 +1,7 @@
 canvas = document.querySelector("canvas")
 canvas.width = innerWidth
 canvas.height = innerHeight
-ctx = canvas.getContext("2d")
+ctx = canvas.getContext("2d", {alpha: false})
 restartDiv = document.querySelector("div")
 //restartDiv.style.display = "none";
 // vars for global use
