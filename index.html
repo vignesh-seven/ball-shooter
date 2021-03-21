@@ -20,10 +20,12 @@ html, body {
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	width: 400px;
-	height: 135px;
+	width: 300px;
+	height: auto;
 	background-color: white;
 	border-radius: 30px;
+	padding-bottom: 15px;
+	line-height: 30px
 }
 #restartButtonDiv button {
 	font-family: Roboto, droid sans, arial;
@@ -33,13 +35,19 @@ html, body {
 	width: 70%;
 	line-height: 50px;
 	border-radius: 15px;
-	/*box-shadow: 2px 2px 5px black;*/
 	border: none;
+	margin-top: 20px
 }
+#gameOverMsg {
+	margin-bottom: 0;
+}
+/* #gameOverMsg, #myScore {
+	line-height: 10px;
+} */
 </style>
 <body>
 <div id="restartButtonDiv">
-	<p>Game Over!, you noob</p>
+	<p id="gameOverMsg">Game Over! you noob</p><span id="myScore"></span>
 	<button onclick="restartGame()">Restart</button>
 </div>
 <canvas></canvas>

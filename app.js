@@ -2,20 +2,22 @@ canvas = document.querySelector("canvas")
 canvas.width = innerWidth
 canvas.height = innerHeight
 ctx = canvas.getContext("2d", {alpha: false})
-restartDiv = document.querySelector("div")
+restartDiv = document.querySelector("#restartButtonDiv")
 //restartDiv.style.display = "none";
 // vars for global use
 let centerX = canvas.width / 2
 let centerY = canvas.height / 2
 let bulletSpeed = 12
-let enemySpeed = 3
+let enemySpeed = 2
 let enemySpawnRate = 1000
 let bulletRadius = 8
 let isGameRunning = true
 let bgColor = "rgba(17, 21, 24, 0.3)"
 let playerColor = "#CF1259"
+let score = 0
+document.querySelector("#myScore").innerHTML = "Your score is: 0"
 
-// Game over function
+// Restart Game function
 function restartGame() {
 	location.reload()
 }
@@ -175,6 +177,8 @@ function animate() {
 				setTimeout(() => {
 					bullets.splice(j, 1)
 					enemies.splice(i, 1)
+					score += 1
+					document.querySelector("#myScore").innerHTML = `Your score is: ${score}`
 				}, 0)
 			}
 		})
