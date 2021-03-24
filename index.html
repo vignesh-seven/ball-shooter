@@ -14,7 +14,7 @@ html, body {
     font-size: 20px;
 	 text-decoration: none;
 }
-#restartButtonDiv {
+#restartButtonDiv, #startButtonDiv {
 	display: none;
 	position: absolute;
 	top: 50%;
@@ -27,7 +27,10 @@ html, body {
 	padding-bottom: 15px;
 	line-height: 30px
 }
-#restartButtonDiv button {
+#startButtonDiv {
+	display: block;
+}
+#restartButtonDiv button, #startButtonDiv button {
 	font-family: Roboto, droid sans, arial;
 	font-size: 18px;
 	color: white;
@@ -38,17 +41,19 @@ html, body {
 	border: none;
 	margin-top: 20px
 }
-#gameOverMsg {
+#gameOverMsg , #startGameMsg {
 	margin-bottom: 0;
 }
-/* #gameOverMsg, #myScore {
-	line-height: 10px;
-} */
+
 </style>
 <body>
 <div id="restartButtonDiv">
 	<p id="gameOverMsg">Game Over! you noob</p><span id="myScore"></span>
 	<button onclick="restartGame()">Restart</button>
+</div>
+<div id="startButtonDiv">
+	<p id="startGameMsg">A game where a ball hits<br> big balls with small balls.</p>
+	<button onclick="startGame()">Start Game</button>
 </div>
 <canvas></canvas>
 </body>

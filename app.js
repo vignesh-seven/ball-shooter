@@ -3,8 +3,7 @@ canvas.width = innerWidth
 canvas.height = innerHeight
 ctx = canvas.getContext("2d", {alpha: false})
 restartDiv = document.querySelector("#restartButtonDiv")
-//restartDiv.style.display = "none";
-// vars for global use
+
 let centerX = canvas.width / 2
 let centerY = canvas.height / 2
 let bulletSpeed = 12
@@ -17,10 +16,7 @@ let playerColor = "#CF1259"
 let score = 0
 document.querySelector("#myScore").innerHTML = "Your score is: 0"
 
-// Restart Game function
-function restartGame() {
-	location.reload()
-}
+
 ctx.strokeStyle = 'white'
 
 // Player
@@ -94,6 +90,8 @@ function spawnEnemies() {
 let x
 let y
 setInterval(() => {
+	if(isGameRunning) {
+	console.log("Spawning enemies")
 	let radius = Math.random() * (40 - 20) + 20
 	if (Math.random() < 0.5) {
 		if (Math.random() < 0.5) {
@@ -120,6 +118,7 @@ setInterval(() => {
 	// Enemy Color
 	let colour = `hsl(${Math.random() * (250 - 60) + 60}, 80%, 60%)`
 	enemies.push(new Enemy(x, y, radius, colour, velocity))
+}
 }, enemySpawnRate)
 }
 
@@ -135,6 +134,15 @@ addEventListener('click', function(e) {
 	bullets.push(bullet)
 })
 
+// on window resize, fit the canvas to the window and make the player centered
+window.addEventListener("resize", () => {
+	canvas.width = innerWidth
+	canvas.height = innerHeight
+	centerX = canvas.width / 2
+	centerY = canvas.height / 2
+	player.x = centerX
+	player.y = centerY
+})
 
 // Animate Loop
 function animate() {
@@ -192,5 +200,23 @@ function animate() {
 	})
 	player.draw()
 }
-animate()
-spawnEnemies()
+
+function startGame() {
+	document.querySelector("#startButtonDiv").style.display = "none"
+	animate()
+	spawnEnemies()
+}
+// Restart Game function
+function restartGame() {
+	//location.reload()
+	bullets = []
+	enemies = []
+	score = 0
+	restartDiv.style.display = "none"
+	isGameRunning = true
+	animate()
+	//spawnEnemies()
+}
+// Future plans
+//  - particle explosion on enemy hit
+//  - Make a welcome/start screen
