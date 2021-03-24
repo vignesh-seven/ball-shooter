@@ -1,5 +1,5 @@
-# Top Down Shooter Game
+# Ball Shooter Game
 
-A game (if I end up finishing it)
+A game where you are a ball shooting big balls with small balls.
 
-Fully made with HTML Canvas
+A HTML Canvas game.
