@@ -101,8 +101,8 @@ class Dot {
 	}
 	update() {
 		this.draw()
-		this.x += this.speed.x * 0.5
-		this.y += this.speed.y * 0.5
+		this.x += this.speed.x * 0.55
+		this.y += this.speed.y * 0.55
 		this.radius -= 3
 	}
 }
@@ -120,7 +120,7 @@ let y
 setInterval(() => {
 	if(isGameRunning) {
 	console.log("Spawning enemies")
-	let radius = Math.random() * (40 - 20) + 20
+	let radius = Math.random() * (50 - 20) + 20
 	if (Math.random() < 0.5) {
 		if (Math.random() < 0.5) {
 			x = 0 - radius
@@ -233,12 +233,16 @@ function animate() {
 	ctx.fillStyle = "rgba(255, 255, 255, 0.8)"
 	dots.forEach((dot, i) => {
 		dot.update()
-		if(dot.radius <= 2) {
+		if(dot.radius <= 0) {
 			dots.splice(i, 1)
 		}
 	})
 
 	player.draw()
+}
+
+function randomBetween(min ,max){
+return (Math.random()*(max - min + 1) + min);
 }
 
 function spawnParticles(enemyX, enemyY, enemyRadius, enemyColor, bulletX, bulletY) {
@@ -248,16 +252,22 @@ function spawnParticles(enemyX, enemyY, enemyRadius, enemyColor, bulletX, bullet
 	this.enemyColor = enemyColor
 	this.bulletX = bulletX
 	this.bulletY = bulletY
+	this.randomRadius = 0
 	// spawn particles
-	for (let k = 0; k < 7; k++) {
-		let angle = Math.atan2(this.bulletY - centerY, this.bulletX - centerX)
-		// Randomize the angle a little
-		angle += (Math.random() - 0.5)
+	for (let k = 0; k < 20; k++) {
+		this.randomRadius = Math.random() * (this.enemyRadius-20) + 20
+		let angle = Math.atan2(this.enemyY - centerY, this.enemyX - centerX)
+		// Randomize the angle a little (symetrically)
+		if(k % 2 == 0) {
+			angle += randomBetween(0, 0.3)
+		} else {
+			angle += randomBetween(-0.3, 0)
+		}
 		let speed = {
 			x: Math.cos(angle) * 20,
 			y: Math.sin(angle) * 20
 		}
-		dot = new Dot(this.enemyX, this.enemyY, this.enemyRadius, speed, this.enemyColor)
+		dot = new Dot(this.enemyX, this.enemyY, this.randomRadius, speed, this.enemyColor)
 		dots.push(dot)
 	}
 }
