@@ -14,6 +14,10 @@ let isGameRunning = true
 let bgColor = "rgba(17, 21, 24, 0.3)"
 let playerColor = "#CF1259"
 let score = 0
+let speed = {
+	x: 0,
+	y: 0
+}
 document.querySelector("#myScore").innerHTML = "Your score is: 0"
 
 
@@ -80,10 +84,34 @@ class Enemy {
 		this.y += this.velocity.y
 	}
 }
+// Particle system
+class Dot {
+	constructor(x, y, radius, speed, color) {
+		this.x = x
+		this.y = y
+		this.speed = speed
+		this.radius = radius
+		this.color = color
+	}
+	draw() {
+		ctx.beginPath()
+		ctx.fillStyle = this.color
+		ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
+		ctx.fill()
+	}
+	update() {
+		this.draw()
+		this.x += this.speed.x * 0.5
+		this.y += this.speed.y * 0.5
+		this.radius -= 3
+	}
+}
+
 
 // Arrays for bullets and Enemies
 let bullets = []
 let enemies = []
+let dots = [] // I mean, particles
 
 // Spawning Enemies
 function spawnEnemies() {
@@ -132,6 +160,7 @@ addEventListener('click', function(e) {
 	}
 	bullet = new Bullet(centerX, centerY, bulletRadius, '#A3F9FF', velocity)
 	bullets.push(bullet)
+
 })
 
 // on window resize, fit the canvas to the window and make the player centered
@@ -180,9 +209,11 @@ function animate() {
 		bullets.forEach((bullet, j) => {
 			// distance b/w enemy and bullet
 			const distance = Math.hypot(enemy.x - bullet.x, enemy.y - bullet.y)
-			// kill enemy if touching bullet
+				// kill enemy if touching bullet
 			if(distance < bullet.radius + enemy.radius) {
 				setTimeout(() => {
+				// and then spawn particles
+				spawnParticles(enemy.x, enemy.y, enemy.radius, enemy.color, bullet.x, bullet.y)
 					bullets.splice(j, 1)
 					enemies.splice(i, 1)
 					score += 1
@@ -198,9 +229,38 @@ function animate() {
 			enemies.splice(i, 1)
 		}
 	})
+	// draw particles
+	ctx.fillStyle = "rgba(255, 255, 255, 0.8)"
+	dots.forEach((dot, i) => {
+		dot.update()
+		if(dot.radius <= 2) {
+			dots.splice(i, 1)
+		}
+	})
+
 	player.draw()
 }
 
+function spawnParticles(enemyX, enemyY, enemyRadius, enemyColor, bulletX, bulletY) {
+	this.enemyX = enemyX
+	this.enemyY = enemyY
+	this.enemyRadius = enemyRadius
+	this.enemyColor = enemyColor
+	this.bulletX = bulletX
+	this.bulletY = bulletY
+	// spawn particles
+	for (let k = 0; k < 7; k++) {
+		let angle = Math.atan2(this.bulletY - centerY, this.bulletX - centerX)
+		// Randomize the angle a little
+		angle += (Math.random() - 0.5)
+		let speed = {
+			x: Math.cos(angle) * 20,
+			y: Math.sin(angle) * 20
+		}
+		dot = new Dot(this.enemyX, this.enemyY, this.enemyRadius, speed, this.enemyColor)
+		dots.push(dot)
+	}
+}
 function startGame() {
 	document.querySelector("#startButtonDiv").style.display = "none"
 	animate()
@@ -208,15 +268,10 @@ function startGame() {
 }
 // Restart Game function
 function restartGame() {
-	//location.reload()
 	bullets = []
 	enemies = []
 	score = 0
 	restartDiv.style.display = "none"
 	isGameRunning = true
 	animate()
-	//spawnEnemies()
 }
-// Future plans
-//  - particle explosion on enemy hit
-//  - Make a welcome/start screen
