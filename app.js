@@ -258,7 +258,7 @@ function spawnParticles(enemyX, enemyY, enemyRadius, enemyColor, bulletX, bullet
 		this.randomRadius = Math.random() * (this.enemyRadius-20) + 20
 		let angle = Math.atan2(this.enemyY - centerY, this.enemyX - centerX)
 		// Randomize the angle a little (symetrically)
-		if(k % 2 == 0) {
+		if(k % 2 === 0) {
 			angle += randomBetween(0, 0.3)
 		} else {
 			angle += randomBetween(-0.3, 0)
